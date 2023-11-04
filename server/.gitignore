@@ -1,0 +1,14 @@
+# Ignore compiled JavaScript files
+dist/
+
+# Ignore environment variables
+.env
+
+# Ignore Node.js module metadata
+node_modules/
+
+# Ignore test coverage files
+coverage/
+
+# Ignore linter output
+.eslintcache/
