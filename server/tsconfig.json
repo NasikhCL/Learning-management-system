@@ -19,5 +19,5 @@
     /* Completeness */
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
-  "include": ["src/*/*"]
+  "include": ["src/*/*", "src/routes/v1/usersRoutes", "src/routes/v1/adminRoutes"]
 }
