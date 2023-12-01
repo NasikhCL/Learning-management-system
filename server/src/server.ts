@@ -27,7 +27,7 @@ app.get('/test', (req, res)=>{
 });
 
 app.all('*', (req, res, next)=>{
-    const err = new Error(`Route ${req.originalUrl} not found`) as any
+    const err = new Error(`Route ${req.originalUrl} not found`) as any;
     err.statusCode = 404;
     next(err)
 
