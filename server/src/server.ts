@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import routes from './routes';
+import {errorMiddleware} from './middleware/error'
 
 const app = express();
 
@@ -41,3 +42,4 @@ app.listen(port, () => {
     mongooseConnection();
 
 });
+app.use(errorMiddleware);
