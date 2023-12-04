@@ -62,7 +62,7 @@ export const UserSchema = new mongoose.Schema<IUser>({
 
 
 //hashing password
-UserSchema.pre<IUser>('save', async function(next){
+UserSchema.pre<IUser> ('save', async function(next){
     if(!this.isModified('password')){
         return next();
     }
