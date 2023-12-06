@@ -11,17 +11,27 @@ interface EmailOptions{
 
 
 const sendMail= async(options: EmailOptions):Promise<void> =>{
-    
+
     const transporter = nodemailer.createTransport({
-        host: (process.env.SMTP_HOST || "smtp.gmail.com"),
-        secure: false,
-        port: parseInt(process.env.SMTP_PORT ||'587'),
-        service: process.env.SMTP_SERVICE,
-        auth:{
-            type: "login", 
-            user:process.env.SMPT_MAIL,
-            pass: process.env.SMTP_PASSWORD,
-        },
+
+        // host: (process.env.SMTP_HOST || "smtp.gmail.com"),
+        // port: 587,
+        // parseInt(process.env.SMTP_PORT ||'587'),
+        // service: (process.env.SMTP_SERVICE || "gmail"),
+        // secure: false,
+        // auth:{
+        //     user: "nasikcl@gmail.com",
+        //     pass: "ggtzokuaqgsnkgpg"
+            // user:process.env.SMPT_MAIL,
+            // pass: process.env.SMTP_PASSWORD,
+        // },
+        Service: 'gmail',
+            auth: {
+                user: "nasikcl@gmail.com",
+                pass: "ggtzokuaqgsnkgpg"
+            },
+            port: 465,
+            host: "smtp.gmail.com"
     }as nodemailer.TransportOptions);
 
     const {email, subject, template, data} = options
@@ -37,8 +47,8 @@ const sendMail= async(options: EmailOptions):Promise<void> =>{
         subject,
         html
     }
-
     await transporter.sendMail(mailOptions)
+
 }
 
 export default sendMail;
