@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import express from 'express';
 import mongooseConnection from './db/connection';
 import cookieParser from 'cookie-parser';
@@ -34,7 +33,7 @@ app.all('*', (req, res, next)=>{
 
 });
 
-const port = process.env.PORT || '5500';
+const port = process.env.PORT || '3000';
 
 
 app.listen(port, () => {

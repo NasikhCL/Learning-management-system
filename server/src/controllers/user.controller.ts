@@ -1,8 +1,10 @@
-import UserModel,{IUser} from '../db/models/user.model';
+import UserModel from '../db/models/user.model';
 import ErrorHandler from '../utils/ErrorHandler';
 import catchAsyncError from '../middleware/catchAsyncError';
 import jwt, { Secret } from 'jsonwebtoken'
-import ejs from 'ejs'
+// import ejs from 'ejs';
+// import path from "path"
+import sendMail from '../utils/sendMail'
 
 
 // register user
@@ -14,21 +16,42 @@ interface IRegistrationBody{
 }
 
 export const registrationUser = catchAsyncError(async(req, res, next) =>{
-    const {name, email, password} = req.body;
-    
-    const isUserAlreadyExist = await UserModel.findOne({email});
-    if(isUserAlreadyExist){
-        return next(new ErrorHandler("email already exists", 400));
-    }
-    const user:IRegistrationBody = {
-        name,
-        email,
-        password
-    };
-    const activationToken = createActivationToken(user)
-    const activationCode = activationToken.activationCode
+    try{
+        const {name, email, password} = req.body;
+        console.log(name, email, password)
+        const isUserAlreadyExist = await UserModel.findOne({email});
+        if(isUserAlreadyExist){
+            return next(new ErrorHandler("email already exists", 400));
+        }
+        const user:IRegistrationBody = {
+            name,
+            email,
+            password
+        };
+        const activationToken = createActivationToken(user)
+        const activationCode = activationToken.activationCode
+        const data = {user:{name:user.name}, activationCode: activationCode};
 
-    const htmlTemp = await ejs.renderFile(path.join(__dirname,"../"))
+        // const html = await ejs.renderFile(path.join(__dirname,"../mails/acticvation.mail.ejs",data))
+
+        try{
+            await sendMail({
+                email: user.email,
+                subject: "Activate your Account",
+                template: "activation.mail.ejs",
+                data
+            });
+            res.status(201).json({
+                success: true,
+                message: `Please check your: ${user.email} email`,
+                activationToken: activationToken.token
+            })
+        }catch(err:any){
+            return next(new ErrorHandler(err.message, 400))
+        }
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400))
+    }
 })
 
 interface IActivationToken {
@@ -45,4 +68,4 @@ export const createActivationToken = (user:any): IActivationToken=>{
         expiresIn: "5m"
     })
     return {token, activationCode};
-}
+} 
