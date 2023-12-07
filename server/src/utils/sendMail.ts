@@ -27,8 +27,8 @@ const sendMail= async(options: EmailOptions):Promise<void> =>{
         // },
         Service: 'gmail',
             auth: {
-                user: "nasikcl@gmail.com",
-                pass: "ggtzokuaqgsnkgpg"
+                 user: (process.env.SMPT_MAIL || "nasikcl@gmail.com"),
+                pass: (process.env.SMTP_PASSWORD || ""),
             },
             port: 465,
             host: "smtp.gmail.com"
