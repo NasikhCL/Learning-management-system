@@ -1,6 +1,6 @@
 import mongoose, { Document, Model } from "mongoose";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken"
 
 const emailRegexPattern: RegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 export interface IUser extends Document {
@@ -15,7 +15,8 @@ export interface IUser extends Document {
         url: string;
     }
     comparePassword: (password: string) => Promise<boolean>;
-
+    signAccessToken: ()=> string;
+    signRefreshToken: ()=> string;
 
 }
 export const UserSchema = new mongoose.Schema<IUser>({
@@ -73,6 +74,17 @@ UserSchema.pre<IUser> ('save', async function(next){
 //compare password
 UserSchema.methods.comparePassword = async function(enteredPassword:string): Promise<boolean>{
     return await bcrypt.compare(enteredPassword, this.password)
+}
+
+
+// sign access token
+UserSchema.methods.signAccessToken = function(){
+    return jwt.sign({id:this._id,},( process.env.ACCESS_TOKEN || "e423"));
+}
+
+// sign refresh token
+UserSchema.methods.signRefreshToken = function(){
+    return jwt.sign({id:this._id,}, (process.env.REFRESH_TOKEN || "fdage34q"));
 }
 
 const UserModel: Model<IUser> = mongoose.model<IUser>("User", UserSchema);
