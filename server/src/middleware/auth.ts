@@ -4,7 +4,9 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import {redis} from '../utils/redis'
 import { Request, Response, NextFunction } from 'express';
 import { IUser } from '../db/models/user.model';
-interface RequestWithUser extends Request{
+
+
+export interface RequestWithUser extends Request{
     user?: IUser
   }
 

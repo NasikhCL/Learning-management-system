@@ -8,6 +8,8 @@ import sendMail from '../utils/sendMail'
 import { Request, Response, NextFunction } from 'express';
 import { cookieAccessTokenOptions, cookieRefreshTokenOptions, sendToken } from '../utils/jwt';
 import {redis} from '../utils/redis'
+import { getUserById } from '../services/user.services';
+import { RequestWithUser } from '../middleware/auth';
 
 // register user
 interface IRegistrationBody{
@@ -17,6 +19,11 @@ interface IRegistrationBody{
     avatar?:string;
 }
 
+interface ISocialAuthBody{
+    email: string;
+    name: string;
+    avatar: string
+}
 export const registrationUser = catchAsyncError(async(req, res, next) =>{
     try{
         const {name, email, password} = req.body;
@@ -205,3 +212,18 @@ export const updateTokens = catchAsyncError(async(req:Request, res:Response, nex
         return next(new ErrorHandler(err.message, 400));
     }
 })
+
+
+
+// get user info
+
+export const getUserInfo = catchAsyncError(async(req:RequestWithUser, res:Response, next:NextFunction)=>{
+    try{
+        const userId = req.user?.id
+        getUserById(userId, res)
+
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400));
+    }
+})
+
