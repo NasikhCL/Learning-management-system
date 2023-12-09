@@ -6,8 +6,8 @@ import jwt, { Secret } from 'jsonwebtoken'
 // import path from "path"
 import sendMail from '../utils/sendMail'
 import { Request, Response, NextFunction } from 'express';
-import { sendToken } from '../utils/jwtAuth';
-
+import { sendToken } from '../utils/jwt';
+import {redis} from '../utils/redis'
 
 // register user
 interface IRegistrationBody{
@@ -136,7 +136,8 @@ export const loginUser = catchAsyncError(async(req, res, next)=>{
         if(!email){
             return next(new ErrorHandler("invalid email or password", 400))
         }
-        const user = await UserModel.findOne({email}).select("password");
+        const user:IUser = await UserModel.findOne({email}).select('+password');
+        console.log(user,"this is user login now")
         if(!user){
             return next(new ErrorHandler("invalid email or password", 400))
         }
@@ -154,11 +155,16 @@ export const loginUser = catchAsyncError(async(req, res, next)=>{
 
 
 
-export const logOutUser = catchAsyncError(async(req, res, next)=>{
+export const logOutUser = catchAsyncError(async(req:Request, res:Response, next:NextFunction)=>{
     try{
+
         res.cookie("access_token","",{maxAge:1});
         res.cookie("refresh_token", "", {maxAge:1});
 
+        const userId = req.headers.id || ""  as string
+        if(userId){
+            redis.del(userId as string);
+        }
         return res.status(200).json({
             success: true,
             message: "Logged out successfully"
@@ -166,6 +172,5 @@ export const logOutUser = catchAsyncError(async(req, res, next)=>{
         
     }catch(err:any){
         return next(new ErrorHandler(err.message, 400));
-
     }
 })
