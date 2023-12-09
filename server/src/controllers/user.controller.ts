@@ -1,12 +1,12 @@
-import UserModel,{IUser} from '../db/models/user.model';
+import UserModel,{IUser, jwtAccessTokenOptions, jwtRefreshTokenOptions} from '../db/models/user.model';
 import ErrorHandler from '../utils/ErrorHandler';
 import catchAsyncError from '../middleware/catchAsyncError';
-import jwt, { Secret } from 'jsonwebtoken'
+import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 // import ejs from 'ejs';
 // import path from "path"
 import sendMail from '../utils/sendMail'
 import { Request, Response, NextFunction } from 'express';
-import { sendToken } from '../utils/jwt';
+import { cookieAccessTokenOptions, cookieRefreshTokenOptions, sendToken } from '../utils/jwt';
 import {redis} from '../utils/redis'
 
 // register user
@@ -170,6 +170,37 @@ export const logOutUser = catchAsyncError(async(req:Request, res:Response, next:
             message: "Logged out successfully"
         })
         
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400));
+    }
+})
+
+//  update access token
+
+export const updateTokens = catchAsyncError(async(req:Request, res:Response, next:NextFunction)=>{
+    try{
+        const refresh_token = req.cookies.refresh_token as string;
+        const decoded = jwt.verify(refresh_token, (process.env.REFRESH_TOKEN || "somthing") ) as JwtPayload
+        if(!decoded){
+            return next(new ErrorHandler("not able to refreh token", 400));
+        }
+
+        const session = await redis.get(decoded.id as string);
+        if(!session){
+            return next(new ErrorHandler("no session found", 400));
+        }
+
+        const user = JSON.parse(session);
+        const newAccessToken = jwt.sign({id: user._id}, (process.env.ACCESS_TOKEN || "something"), jwtAccessTokenOptions)
+        const newRefeeshToken = jwt.sign({id: user._id}, (process.env.REFRESH_TOKEN || "something"), jwtRefreshTokenOptions) 
+        
+        res.cookie("access_token", newAccessToken, cookieAccessTokenOptions);
+        res.cookie("refresh_token",newRefeeshToken, cookieRefreshTokenOptions);
+
+        return res.status(200).json({
+            success: true,
+            accessToken: newAccessToken
+        })
     }catch(err:any){
         return next(new ErrorHandler(err.message, 400));
     }
