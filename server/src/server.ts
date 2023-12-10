@@ -5,7 +5,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import routes from './routes';
 import {errorMiddleware} from './middleware/error'
-
+import {v2 as cloudinary} from 'cloudinary';
 const app = express();
 
 app.use(express())
@@ -35,6 +35,11 @@ app.all('*', (req, res, next)=>{
 
 const port = process.env.PORT || '3000';
 
+cloudinary.config({
+    cloud_name: (process.env.CLOUD_NAME || ""),
+    api_key: (process.env.CLOUD_API_KEY || ""),
+    api_secret: (process.env.CLOUD_API_SECRET || ""),
+})
 
 app.listen(port, () => {
     console.log(`server is running at port: ${port}`)

@@ -28,7 +28,7 @@ export const sendToken = (user:IUser, statusCode: number, res:Response)=>{
 
 
     res.cookie("access_token", accessToken, cookieAccessTokenOptions);
-    res.cookie("refresh_token", refreshToken, cookieRefreshTokenOptions)
+    res.cookie("refresh_token", refreshToken, cookieRefreshTokenOptions);
 
     return res.status(statusCode).json({
         success: true,

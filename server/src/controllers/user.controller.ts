@@ -10,6 +10,7 @@ import { cookieAccessTokenOptions, cookieRefreshTokenOptions, sendToken } from '
 import {redis} from '../utils/redis'
 import { getUserById } from '../services/user.services';
 import { RequestWithUser } from '../middleware/auth';
+import { v2 as cloudinary } from 'cloudinary';
 
 
 
@@ -42,6 +43,12 @@ interface IUpdateUserPassword{
     oldPassword: string;
     newPassword: string;
 }
+
+interface IUpdateProfilePicture{
+    avatar: string;
+}
+
+
 
 
 // register user
@@ -170,7 +177,7 @@ export const logOutUser = catchAsyncError(async(req:Request, res:Response, next:
     try{
 
         res.cookie("access_token","",{maxAge:1});
-        res.cookie("refresh_token", "", {maxAge:1});
+        res.cookie("refresh_token","", {maxAge:1});
 
         const userId = req.headers.id || ""  as string
         if(userId){
@@ -206,7 +213,7 @@ export const updateTokens = catchAsyncError(async(req:RequestWithUser, res:Respo
         const newRefeeshToken = jwt.sign({id: user._id}, (process.env.REFRESH_TOKEN || "something"), jwtRefreshTokenOptions) 
         
         req.user = user
-        res.cookie("access_token", newAccessToken, cookieAccessTokenOptions);
+        res.cookie("access_token",newAccessToken, cookieAccessTokenOptions);
         res.cookie("refresh_token",newRefeeshToken, cookieRefreshTokenOptions);
 
         return res.status(200).json({
@@ -293,6 +300,45 @@ export const updatePassword = catchAsyncError(async(req:RequestWithUser, res:Res
         
         return res.status(201).json({
             success: true,
+        })
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400));
+
+    }
+})
+
+
+
+
+
+// update profile picture
+export const updateProfilePicture = catchAsyncError(async(req:RequestWithUser, res:Response, next:NextFunction)=>{
+    try{
+        
+        const {avatar} = req.body as IUpdateProfilePicture
+        const userId = req.user?._id;
+        const user = await UserModel.findById(userId);
+
+        if(user && avatar){
+            if(user?.avatar?.public_id){
+                await cloudinary.uploader.destroy(user?.avatar?.public_id)
+            }
+            const myCloud = await cloudinary.uploader.upload(avatar,{
+                folder:"avatars",
+                width:150,
+            });
+            user.avatar = {
+                public_id:myCloud.public_id,
+                url: myCloud.secure_url,
+            }
+        }
+
+        await user?.save();
+        await redis.set(userId, JSON.stringify(user))
+
+        return res.status(201).json({
+            success: true,
+            user
         })
     }catch(err:any){
         return next(new ErrorHandler(err.message, 400));

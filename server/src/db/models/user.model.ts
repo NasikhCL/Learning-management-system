@@ -93,7 +93,7 @@ export const jwtRefreshTokenOptions:ICookieOptions ={
 
 // sign access token
 UserSchema.methods.signAccessToken = function(){
-    return jwt.sign({id:this._id,},( process.env.ACCESS_TOKEN || "something"), jwtAccessTokenOptions);
+    return jwt.sign({id:this._id,}, (process.env.ACCESS_TOKEN || "something"), jwtAccessTokenOptions);
 }
 
 // sign refresh token
