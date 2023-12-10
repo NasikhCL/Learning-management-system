@@ -38,6 +38,11 @@ interface IUpdateUserInfo {
     name?: string;
     email?: string;
 }
+interface IUpdateUserPassword{
+    oldPassword: string;
+    newPassword: string;
+}
+
 
 // register user
 export const registrationUser = catchAsyncError(async(req, res, next) =>{
@@ -253,6 +258,41 @@ export const updateUserInfo = catchAsyncError(async(req:RequestWithUser, res:Res
         return res.status(201).json({
             success: true,
             user
+        })
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400));
+
+    }
+})
+
+// update password
+export const updatePassword = catchAsyncError(async(req:RequestWithUser, res:Response, next:NextFunction)=>{
+    try{
+        const {oldPassword, newPassword} = req.body as IUpdateUserPassword
+        
+        if(!oldPassword || !newPassword){
+            return next(new ErrorHandler("please enter old and new password",400))
+        }
+
+        const user = await UserModel.findById(req.user?._id).select("+password");
+
+        if(!user || user.password ==="undefined"){
+            return next(new ErrorHandler("invalid user",400));
+        }
+        const isPasswordMatch = await user?.comparePassword(oldPassword);
+        if(!isPasswordMatch){
+            return next(new ErrorHandler("invalid old passwrod", 400))
+        }
+        if(oldPassword === newPassword){
+            return next(new ErrorHandler("old and new password cannot be the same",400))
+        }
+        user.password = newPassword;
+
+        await user.save();
+        await redis.set(user?._id, JSON.stringify(user));
+        
+        return res.status(201).json({
+            success: true,
         })
     }catch(err:any){
         return next(new ErrorHandler(err.message, 400));

@@ -1,5 +1,5 @@
 import express from 'express';
-import { activateUser, getUserInfo, logOutUser, loginUser, registrationUser, updateTokens, updateUserInfo } from '../../../controllers/user.controller';
+import { activateUser, getUserInfo, logOutUser, loginUser, registrationUser, updatePassword, updateTokens, updateUserInfo } from '../../../controllers/user.controller';
 import { authorizeRoles, isAuthenticted } from '../../../middleware/auth';
 
 const router = express.Router();
@@ -14,6 +14,7 @@ router.get('/logout',isAuthenticted, authorizeRoles("user") ,logOutUser)
 
 
 router.put('/update-user-info', isAuthenticted, updateUserInfo)
+router.put('/update-user-password', isAuthenticted, updatePassword)
 export default router;
 
 
