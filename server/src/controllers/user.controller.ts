@@ -11,19 +11,35 @@ import {redis} from '../utils/redis'
 import { getUserById } from '../services/user.services';
 import { RequestWithUser } from '../middleware/auth';
 
-// register user
+
+
+interface ILoginRequest{
+    email: string;
+    password: string;
+}
+
 interface IRegistrationBody{
     name: string;
     email: string;
     password: string;
     avatar?:string;
 }
-
-interface ISocialAuthBody{
-    email: string;
-    name: string;
-    avatar: string
+interface IActivationToken {
+    token: string;
+    activationCode: string;
 }
+
+interface IActivationRequest{
+    activation_token: string;
+    activation_code: string;
+}
+
+interface IUpdateUserInfo {
+    name?: string;
+    email?: string;
+}
+
+// register user
 export const registrationUser = catchAsyncError(async(req, res, next) =>{
     try{
         const {name, email, password} = req.body;
@@ -63,10 +79,7 @@ export const registrationUser = catchAsyncError(async(req, res, next) =>{
     }
 })
 
-interface IActivationToken {
-    token: string;
-    activationCode: string;
-}
+
 
 export const createActivationToken = (user:any): IActivationToken=>{
     const activationCode = Math.floor(1000 + Math.random()* 9000).toString();
@@ -81,14 +94,6 @@ export const createActivationToken = (user:any): IActivationToken=>{
 
 
 // user activation
-
-
-interface IActivationRequest{
-    activation_token: string;
-    activation_code: string;
-}
-
-
 export const activateUser = catchAsyncError(async(req, res, next)=>{
     try{
 
@@ -130,13 +135,7 @@ export const activateUser = catchAsyncError(async(req, res, next)=>{
 
 // login user
 
-interface ILoginRequest{
-    email: string;
-    password: string;
-}
-
-
-export const loginUser = catchAsyncError(async(req, res, next)=>{
+export const loginUser = catchAsyncError(async(req:RequestWithUser, res, next)=>{
     try{
         const {email, password} = req.body as ILoginRequest
 
@@ -152,7 +151,7 @@ export const loginUser = catchAsyncError(async(req, res, next)=>{
         if(!isPasswordMatch){
             return next(new ErrorHandler("Invalid email or passowrd", 400))
         }
-
+        req.user = user;
         sendToken(user, 200, res);
 
     }catch(err:any){
@@ -184,7 +183,7 @@ export const logOutUser = catchAsyncError(async(req:Request, res:Response, next:
 
 //  update access token
 
-export const updateTokens = catchAsyncError(async(req:Request, res:Response, next:NextFunction)=>{
+export const updateTokens = catchAsyncError(async(req:RequestWithUser, res:Response, next:NextFunction)=>{
     try{
         const refresh_token = req.cookies.refresh_token as string;
         const decoded = jwt.verify(refresh_token, (process.env.REFRESH_TOKEN || "somthing") ) as JwtPayload
@@ -201,6 +200,7 @@ export const updateTokens = catchAsyncError(async(req:Request, res:Response, nex
         const newAccessToken = jwt.sign({id: user._id}, (process.env.ACCESS_TOKEN || "something"), jwtAccessTokenOptions)
         const newRefeeshToken = jwt.sign({id: user._id}, (process.env.REFRESH_TOKEN || "something"), jwtRefreshTokenOptions) 
         
+        req.user = user
         res.cookie("access_token", newAccessToken, cookieAccessTokenOptions);
         res.cookie("refresh_token",newRefeeshToken, cookieRefreshTokenOptions);
 
@@ -227,3 +227,35 @@ export const getUserInfo = catchAsyncError(async(req:RequestWithUser, res:Respon
     }
 })
 
+// update user info
+
+export const updateUserInfo = catchAsyncError(async(req:RequestWithUser, res:Response, next:NextFunction)=>{
+    try{
+        const { name, email } = req.body as IUpdateUserInfo
+        const userId = req.user?._id
+        const user = await UserModel.findById(userId);
+        if(email && user){
+            const isEmailExist = await UserModel.findOne({email});
+            if(isEmailExist){
+                return next(new ErrorHandler("email already exist",400))
+            }
+            user.email = email
+
+        }
+        if(name && user){
+            user.name = name;
+        }
+
+        await user?.save();
+
+        await redis.set(userId, JSON.stringify(user));
+        
+        return res.status(201).json({
+            success: true,
+            user
+        })
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400));
+
+    }
+})

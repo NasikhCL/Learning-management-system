@@ -30,7 +30,7 @@ export const sendToken = (user:IUser, statusCode: number, res:Response)=>{
     res.cookie("access_token", accessToken, cookieAccessTokenOptions);
     res.cookie("refresh_token", refreshToken, cookieRefreshTokenOptions)
 
-    res.status(statusCode).json({
+    return res.status(statusCode).json({
         success: true,
         user,
         accessToken
