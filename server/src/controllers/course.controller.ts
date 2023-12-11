@@ -1,5 +1,5 @@
 import catchAsyncError from "../middleware/catchAsyncError";
-import CourseModel, { ICourse } from '../db/models/course.model'
+import CourseModel from '../db/models/course.model'
 import ErrorHandler from "../utils/ErrorHandler";
 import { v2 as cloudinary } from 'cloudinary';
 import courseModel from "../db/models/course.model";
@@ -90,5 +90,36 @@ export const updateCourse = catchAsyncError(async(req, res, next)=>{
 
     }catch (err:any) {
         return next(new ErrorHandler(err.message,400))
+    }
+})
+
+// get all course - without purchase
+export const getAllCourses = catchAsyncError(async(req, res, next)=>{
+    try{
+        const courses = await courseModel.find().select("-videos");
+
+        res.status(200).json({
+            success:true,
+            courses
+        })
+
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400))
+    }
+})
+
+
+// get single course - without purchase
+export const getCoursesById = catchAsyncError(async(req, res, next)=>{
+    try{
+        const course = await courseModel.findById(req.params.id).select("-videos.url");
+
+        res.status(200).json({
+            success:true,
+            course
+        })
+
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400))
     }
 })
