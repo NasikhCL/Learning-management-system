@@ -1,18 +1,22 @@
 import mongoose, { Document, Model } from "mongoose";
 
 
-interface IVideo {
+export interface IVideo {
+    videoNumber:number;
     title: string;
     url: string;
     duration: number;
   }
 
-interface ICourse extends Document{
+export interface ICourse extends Document{
     title: string;
     description: string;
     instructor: string;
     videos: IVideo[];
-    thumbnail: string;
+    thumbnail: {
+        public_id: string,
+        url: string
+    };
     price: number;
     offerPrice?: number;
 }
@@ -31,6 +35,10 @@ export const courseSchema = new mongoose.Schema<ICourse>({
       required: true,
     },
     videos: [{
+        videoNumber:{
+            type: Number,
+            required: true
+        },
         title: {
           type: String,
           required: true,
@@ -45,8 +53,8 @@ export const courseSchema = new mongoose.Schema<ICourse>({
         },
       }],
     thumbnail: {
-      type: String,
-      required: true,
+        public_id: String,
+        url: String
     },
     price: {
       type: Number,
