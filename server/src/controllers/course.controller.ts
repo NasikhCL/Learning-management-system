@@ -3,6 +3,7 @@ import CourseModel from '../db/models/course.model'
 import ErrorHandler from "../utils/ErrorHandler";
 import { v2 as cloudinary } from 'cloudinary';
 import courseModel from "../db/models/course.model";
+import { redis } from "../utils/redis";
 
 
 // create course
@@ -96,12 +97,22 @@ export const updateCourse = catchAsyncError(async(req, res, next)=>{
 // get all course - without purchase
 export const getAllCourses = catchAsyncError(async(req, res, next)=>{
     try{
-        const courses = await courseModel.find().select("-videos");
+        const cacheData = await redis.get("allCourses")
+        if(cacheData){
+            const courses = JSON.parse(cacheData);
+            return res.status(200).json({
+                sucess: true,
+                courses
+            })
+        }else{
+            const courses = await courseModel.find().select("-videos");
+            await redis.set("allCourses", JSON.stringify(courses))
+            return res.status(200).json({
+                success:true,
+                courses
+            })
+        }
 
-        res.status(200).json({
-            success:true,
-            courses
-        })
 
     }catch(err:any){
         return next(new ErrorHandler(err.message, 400))
@@ -112,12 +123,24 @@ export const getAllCourses = catchAsyncError(async(req, res, next)=>{
 // get single course - without purchase
 export const getCoursesById = catchAsyncError(async(req, res, next)=>{
     try{
-        const course = await courseModel.findById(req.params.id).select("-videos.url");
 
-        res.status(200).json({
-            success:true,
-            course
-        })
+        const cacheData = await redis.get(req.params.id)
+        if(cacheData){
+            const course = JSON.parse(cacheData);
+            return res.status(200).json({
+                sucess: true,
+                course
+            })
+        }else{
+            const course = await courseModel.findById(req.params.id).select("-videos.url");
+            
+            await redis.set(req.params.id, JSON.stringify(course));
+           
+            return res.status(200).json({
+                success:true,
+                course
+            })
+        }
 
     }catch(err:any){
         return next(new ErrorHandler(err.message, 400))
