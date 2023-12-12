@@ -4,7 +4,9 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import {redis} from '../utils/redis'
 import { Request, Response, NextFunction } from 'express';
 import { IUser } from '../db/models/user.model';
-interface RequestWithUser extends Request{
+
+
+export interface RequestWithUser extends Request{
     user?: IUser
   }
 
@@ -14,7 +16,7 @@ export const isAuthenticted = catchAsyncError(async(req:RequestWithUser, res:Res
     if(!access_token){
         return next(new ErrorHandler("please login to access this request",400));
     }
-    const decoded = jwt.verify(access_token, (process.env.ACCESS_TOKEN || '') as string) as JwtPayload
+    const decoded = jwt.verify(access_token, (process.env.ACCESS_TOKEN || 'something') as string) as JwtPayload
     if(!decoded){
         return next(new ErrorHandler("access token not valid",400))
     }
@@ -39,3 +41,4 @@ export const authorizeRoles = (...roles: string[])=>{
         next();
     }
 }
+

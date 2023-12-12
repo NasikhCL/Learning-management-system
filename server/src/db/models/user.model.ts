@@ -1,6 +1,7 @@
 import mongoose, { Document, Model } from "mongoose";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
+
 
 const emailRegexPattern: RegExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 export interface IUser extends Document {
@@ -9,7 +10,7 @@ export interface IUser extends Document {
     password: string;
     role: string;
     isVerified: boolean;
-    courses: Array<{courseId: string}>;
+    courses: string[];
     avatar: {
         public_id: string;
         url: string;
@@ -19,6 +20,12 @@ export interface IUser extends Document {
     signRefreshToken: ()=> string;
 
 }
+
+interface ICookieOptions{
+    expiresIn: string;
+}
+
+
 export const UserSchema = new mongoose.Schema<IUser>({
     name:{
         type: String,
@@ -53,11 +60,7 @@ export const UserSchema = new mongoose.Schema<IUser>({
         type: Boolean,
         default: false
     },
-    courses:[
-        {
-            courseId: String,
-        }
-    ],
+    courses:[String],
     
 },{timestamps: true});
 
@@ -76,15 +79,22 @@ UserSchema.methods.comparePassword = async function(enteredPassword:string): Pro
     return await bcrypt.compare(enteredPassword, this.password)
 }
 
+export const jwtAccessTokenOptions:ICookieOptions = {
+    expiresIn:"5m"
+}
+
+export const jwtRefreshTokenOptions:ICookieOptions ={
+    expiresIn:"3d"
+}
 
 // sign access token
 UserSchema.methods.signAccessToken = function(){
-    return jwt.sign({id:this._id,},( process.env.ACCESS_TOKEN || "e423"));
+    return jwt.sign({id:this._id,}, (process.env.ACCESS_TOKEN || "something"), jwtAccessTokenOptions);
 }
 
 // sign refresh token
 UserSchema.methods.signRefreshToken = function(){
-    return jwt.sign({id:this._id,}, (process.env.REFRESH_TOKEN || "fdage34q"));
+    return jwt.sign({id:this._id,}, (process.env.REFRESH_TOKEN || "something"), jwtRefreshTokenOptions);
 }
 
 const UserModel: Model<IUser> = mongoose.model<IUser>("User", UserSchema);
