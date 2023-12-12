@@ -10,7 +10,7 @@ export interface IUser extends Document {
     password: string;
     role: string;
     isVerified: boolean;
-    courses: Array<{courseId: string}>;
+    courses: string[];
     avatar: {
         public_id: string;
         url: string;
@@ -60,11 +60,7 @@ export const UserSchema = new mongoose.Schema<IUser>({
         type: Boolean,
         default: false
     },
-    courses:[
-        {
-            courseId: String,
-        }
-    ],
+    courses:[String],
     
 },{timestamps: true});
 

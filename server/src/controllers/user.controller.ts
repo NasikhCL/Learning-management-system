@@ -165,7 +165,7 @@ export const loginUser = catchAsyncError(async(req:RequestWithUser, res, next)=>
         }
         req.user = user;
         sendToken(user, 200, res);
-
+        console.log(req.user)
     }catch(err:any){
         return next(new ErrorHandler(err.message, 400));
     }

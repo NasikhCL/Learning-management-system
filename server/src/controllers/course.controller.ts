@@ -4,6 +4,7 @@ import ErrorHandler from "../utils/ErrorHandler";
 import { v2 as cloudinary } from 'cloudinary';
 import courseModel from "../db/models/course.model";
 import { redis } from "../utils/redis";
+import { RequestWithUser } from "../middleware/auth";
 
 
 // create course
@@ -142,6 +143,34 @@ export const getCoursesById = catchAsyncError(async(req, res, next)=>{
             })
         }
 
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400))
+    }
+})
+
+
+
+// get cour se content - purchased users
+
+export const getCourseWithContent = catchAsyncError(async(req:RequestWithUser, res, next)=>{
+    try{
+        const userCourseList = req.user?.courses
+        const courseId = req.params.id;
+        if(!userCourseList || userCourseList.length === 0){
+            return next(new ErrorHandler("unable to access this course",400))
+        }
+        const courseExists = userCourseList.find((course:any) => course === courseId )
+        if(!courseExists){
+            return next(new ErrorHandler("please purchase the course to access",400))
+        }
+
+        const course = await courseModel.findById(courseId);
+
+
+        return res.status(200).json({
+            success: true,
+            course
+        })
     }catch(err:any){
         return next(new ErrorHandler(err.message, 400))
     }
