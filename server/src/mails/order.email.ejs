@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Congratulations on Your Course Purchase!</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .order-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 500px; /* Increased width */
+      text-align: center;
+    }
+
+    h2 {
+      color: #28a745;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin: 8px 0;
+      color: #666;
+    }
+
+    .order-info {
+      font-weight: bold;
+      color: #333;
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .thanks-message {
+      color: #28a745;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .congrats-message {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .enjoy-message {
+      font-style: italic;
+      margin-top: 20px;
+      color: #666;
+    }
+
+    .about-platform {
+      margin-top: 30px;
+    }
+
+    .team-info {
+      font-weight: bold;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    .order-table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    .order-table th, .order-table td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    .order-table th {
+      background-color: #f2f2f2;
+    }
+
+    .subtotal, .total {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="order-container">
+    <h2>Congratulations on Your Course Purchase!</h2>
+    <p class="congrats-message">Great choice! You're on your way to exciting new knowledge and skills.</p>
+
+    <p class="order-info">
+      <span>Order ID: <%= orderId %></span>
+      <span>Order Date: <%= orderDate %></span>
+    </p>
+
+    <table class="order-table">
+      <tr>
+        <th>Course Name</th>
+        <td><%= courseName %></td>
+      </tr>
+      <tr>
+        <th>Quantity</th>
+        <td><%= quantity %></td>
+      </tr>
+      <tr>
+        <th>Order Cost</th>
+        <td>$<%= orderCost.toFixed(2) %></td>
+      </tr>
+      <tr>
+        <th>Subtotal</th>
+        <td>$<%= (quantity * orderCost).toFixed(2) %></td>
+      </tr>
+      <tr>
+        <th>Total</th>
+        <td>$<%= (quantity * orderCost).toFixed(2) %></td>
+      </tr>
+    </table>
+
+    <p class="thanks-message">Thank you for choosing Team LMS for your learning journey!</p>
+    <p class="enjoy-message">Enjoy exploring the world of knowledge with us!</p>
+
+    <div class="about-platform">
+      <p>Team LMS is committed to providing a seamless and engaging learning experience. Our platform is designed to empower learners like you with high-quality courses, interactive content, and a supportive community.</p>
+    </div>
+
+    <p class="team-info">- The Team LMS</p>
+  </div>
+</body>
+</html>
