@@ -1,6 +1,6 @@
 import catchAsyncError from "../middleware/catchAsyncError";
 import ErrorHandler from "../utils/ErrorHandler";
-import {IOrder, orderModel} from '../db/models/order.model'
+import orderModel ,{IOrder} from '../db/models/order.model'
 import courseModel from "../db/models/course.model";
 import sendMail from "../utils/sendMail";
 import UserModel from "../db/models/user.model";
@@ -39,29 +39,35 @@ export const createOrder = catchAsyncError(async(req, res, next)=>{
         }
        
         const order = await orderModel.create(data)
+        console.log(order._id.toString(),'order id is this')
         try{
             const data={
-                order:{
                     name: user.name,
-                    order_id: order._id.slice(0,6),
+                    order_id: order._id.toString().slice(0,6),
                     course_name:course.title,
                     price: course.price,
+                    quantity: 1,
                     date: new Date().toLocaleDateString('en-US', { year:"numeric", month:"long", day:"numeric"})
-                }
             }
             await sendMail({
                 email: user.email,
-                subject: "Order Successfull",
+                subject: "Order Successful",
                 template: "order.email.ejs",
                 data
             });
         }catch(err:any){
             return next(new ErrorHandler(err.message, 500))
         }
-
-        user.course.push(courseId);
-        
-        const updatedUser = await UserModel.findByIdAndUpdate(userId,{user},{new:true});
+        console.log(user,'this is user')
+        user.courses.push(courseId);
+         
+        const updatedUser = await UserModel.findByIdAndUpdate(userId,{
+            $set: user
+        },
+        {
+            new:true
+        });
+        console.log(updatedUser, 'tjis is the updated user')
 
         await redis.set(userId, JSON.stringify(updatedUser))
 
