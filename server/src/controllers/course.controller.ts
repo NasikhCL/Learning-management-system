@@ -174,4 +174,24 @@ export const getCourseWithContent = catchAsyncError(async(req:RequestWithUser, r
     }catch(err:any){
         return next(new ErrorHandler(err.message, 400))
     }
+});
+
+
+// delete course
+
+export const deleteCourse = catchAsyncError(async(req, res, next)=>{
+    try{
+        const {courseId} = req.body;
+
+        const course = await courseModel.findByIdAndDelete(courseId);
+        if(!course){
+            return next(new ErrorHandler("course not found to perform this operation", 400))
+        }
+        return res.status(201).json({
+            sucess: true,
+            course
+        })
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400))
+    }
 })
