@@ -181,7 +181,7 @@ export const getCourseWithContent = catchAsyncError(async(req:RequestWithUser, r
 
 export const deleteCourse = catchAsyncError(async(req, res, next)=>{
     try{
-        const {courseId} = req.body;
+        const courseId = req.params.id;
 
         const course = await courseModel.findByIdAndDelete(courseId);
         if(!course){

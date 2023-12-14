@@ -352,7 +352,7 @@ export const updateProfilePicture = catchAsyncError(async(req:RequestWithUser, r
 
 export const deleteUser = catchAsyncError(async(req, res, next)=>{
     try{
-        const {userId} = req.body;
+        const userId = req.params.id;
 
         const user = await UserModel.findByIdAndDelete(userId);
         if(!user){
