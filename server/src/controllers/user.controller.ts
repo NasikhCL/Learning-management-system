@@ -345,3 +345,24 @@ export const updateProfilePicture = catchAsyncError(async(req:RequestWithUser, r
 
     }
 })
+
+
+
+// delete user - by admin
+
+export const deleteUser = catchAsyncError(async(req, res, next)=>{
+    try{
+        const {userId} = req.body;
+
+        const user = await UserModel.findByIdAndDelete(userId);
+        if(!user){
+            return next(new ErrorHandler("user not found to perform this operation", 400))
+        }
+        return res.status(201).json({
+            sucess: true,
+            user
+        })
+    }catch(err:any){
+        return next(new ErrorHandler(err.message, 400))
+    }
+})
