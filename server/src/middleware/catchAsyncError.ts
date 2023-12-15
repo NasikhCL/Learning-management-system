@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
 interface IFunction {
-    // eslint-disable-next-line no-unused-vars
     (req: Request, res: Response, next: NextFunction): Promise<unknown>;
   }
 

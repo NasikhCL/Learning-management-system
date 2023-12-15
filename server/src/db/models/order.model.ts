@@ -21,5 +21,5 @@ const orderSchema = new mongoose.Schema<IOrder>({
     }
 },{timestamps: true});
 
-const orderModel: Model<Iorder> = mongoose.model('Order', orderSchema);
+const orderModel: Model<IOrder> = mongoose.model('Order', orderSchema);
 export default orderModel

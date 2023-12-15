@@ -1,6 +1,6 @@
 import express from 'express';
-import { createCourse, updateCourse } from '../../../controllers/course.controller';
 import { authorizeRoles, isAuthenticted } from '../../../middleware/auth';
+import { deleteUser } from '../../../controllers/user.controller';
 
 const router = express.Router();
 
@@ -9,8 +9,7 @@ router.get('/details', (req, res)=>{
    return res.send('Hello admin')
 });
 
-router.post("/create-course", isAuthenticted, authorizeRoles("admin"),createCourse);
+router.delete("/delete-user/:id", isAuthenticted, authorizeRoles("admin"), deleteUser);
 
-router.put("/update-course/:id", isAuthenticted, authorizeRoles("admin"), updateCourse);
 
 export default router;
