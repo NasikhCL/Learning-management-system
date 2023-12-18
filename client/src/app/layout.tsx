@@ -14,13 +14,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-       <body>
+       <body className="px-4 md:px-8">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
+            {/* <div className="h-[1000px] bg-red-500"></div> */}
             {children}
           </ThemeProvider>
         </body>

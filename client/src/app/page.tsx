@@ -1,11 +1,10 @@
+import Header from '@/components/Header'
 import { Button } from '@/components/ui/button'
-import { ModeToggle } from '@/components/ui/toggleModeButton'
-
 export default function Home() {
   return (
-  <div>
+  <>
+    <Header/>
     <h1>hello NAISKH</h1>
-    <ModeToggle />
-  </div>
+  </>
   )
 }
