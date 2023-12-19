@@ -1,19 +1,31 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from 'next/link'
+import { IUserLogin } from '@/types/auth'
  
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export default function Login({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [formData, setFormData] = useState<IUserLogin>({
+    email: '',
+    password: ''
+  })
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    const {name, value} = e.target;
+    setFormData((prev)=>  {
+    return {...prev, [name]: value}
+    })
+  }
   async function onSubmit(event: React.SyntheticEvent) {
+    // to: backend call and verify the credentials, then redirect
     event.preventDefault()
     setIsLoading(true)
 
@@ -32,12 +44,15 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
+              name="email"
               placeholder="name@example.com"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
+              value={formData.email}
+              onChange={handleInputChange}
             />
           </div>
           <div className="grid gap-1">
@@ -46,17 +61,20 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="password"
+              name="password"
               placeholder="password"
               type="password"
               autoCorrect="off"
               disabled={isLoading}
+              value={formData.password}
+              onChange={handleInputChange}
             />
           </div>
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In with Email
+            Login
           </Button>
         </div>
       </form>
@@ -66,7 +84,7 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            already have an account? Click <Link href='/signup' className="text-blue-700 font-bold">here</Link> to sign in
+            you don&apos;t have an account? <Link href='/signup' className="text-blue-700 font-bold underline">Sign up</Link>
           </span>
         </div>
       </div>

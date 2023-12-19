@@ -23,7 +23,7 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
+    <div className={cn("grid gap-6")}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
         <div className="grid gap-1">
@@ -69,7 +69,7 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In with Email
+            Create Account
           </Button>
         </div>
       </form>
@@ -79,7 +79,7 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            already have an account? Click <Link href='/login' className="text-blue-700 font-bold">here</Link> to sign in
+            already have an account? <Link href='/login' className="text-blue-700 font-bold underline">Sign in</Link>
           </span>
         </div>
       </div>

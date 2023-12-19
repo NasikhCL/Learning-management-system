@@ -2,16 +2,16 @@ import { Metadata } from "next"
 import Link from "next/link"
 
 export const metadata: Metadata = {
-  title: "Authentication",
+  title: "seLearn.io signup",
   description: "sign up /login page of seLearn.io",
 }
+
+
 
 export default function AuthenticationPage({children}:{children:React.ReactNode}) {
   return (
     <>
-      <div className="md:hidden">
-      </div>
-      <div className="container relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+      <div className="container relative pt-12 md:pt-0 h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex items-center text-lg font-medium">
@@ -38,16 +38,16 @@ export default function AuthenticationPage({children}:{children:React.ReactNode}
             </div>
             {children}
             <p className="px-8 text-center text-sm text-muted-foreground">
-              By clicking, you agree to our{" "}
+              By creating account, you agree to our{" "}
               <Link
-                href="/terms"
+                href="#"
                 className="underline underline-offset-4 hover:text-primary"
               >
                 Terms of Service
               </Link>{" "}
               and{" "}
               <Link
-                href="/privacy"
+                href="#"
                 className="underline underline-offset-4 hover:text-primary"
               >
                 Privacy Policy
