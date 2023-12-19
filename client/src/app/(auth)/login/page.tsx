@@ -8,10 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from 'next/link'
 import { IUserLogin } from '@/types/auth'
- 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export default function Login({ className, ...props }: UserAuthFormProps) {
+
+export default function Login() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [formData, setFormData] = useState<IUserLogin>({
     email: '',
@@ -35,7 +34,7 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
   }
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
+    <div className={cn("grid gap-6")}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
           <div className="grid gap-1">

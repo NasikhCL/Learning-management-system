@@ -8,3 +8,8 @@ export interface IUserSignup{
     email: string;
     password: string;
 }
+
+export interface IVerificationCode{
+    code: string;
+    token: string;
+}
