@@ -7,13 +7,26 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from 'next/link'
+import { IUserSignup } from '@/types/auth'
  
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
-export default function Login({ className, ...props }: UserAuthFormProps) {
+export default function Signup({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [formData, setFormData] = React.useState<IUserSignup>({
+    name: '',
+    email: '',
+    password: ''
+  }) 
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    const {name, value} = e.target;
+    setFormData((prev)=>  {
+    return {...prev, [name]: value}
+    })
+  }
   async function onSubmit(event: React.SyntheticEvent) {
+    //handle submit login / backend calls
     event.preventDefault()
     setIsLoading(true)
 
@@ -31,12 +44,15 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
               name
             </Label>
             <Input
+              name="name"
               id="name"
               placeholder="your name"
               type="text"
               autoCorrect="off"
               autoComplete="name"
               disabled={isLoading}
+              value={formData.name}
+              onChange={handleInputChange}
             />
           </div>
           <div className="grid gap-1">
@@ -45,12 +61,15 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
+              name="email"
               placeholder="name@example.com"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
+              value={formData.email}
+              onChange={handleInputChange}
             />
           </div>
           <div className="grid gap-1">
@@ -59,10 +78,13 @@ export default function Login({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="password"
+              name="password"
               placeholder="password"
               type="password"
               autoCorrect="off"
               disabled={isLoading}
+              value={formData.password}
+              onChange={handleInputChange}
             />
           </div>
           <Button disabled={isLoading}>
