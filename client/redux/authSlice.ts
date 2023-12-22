@@ -1,21 +1,32 @@
-import { IUserSignup } from "@/types/auth";
+import { IUserLogin, IUserSignup } from "@/types/auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
 
-const initialState = {
+
+interface UsersState {
+    isLoggedIn: boolean;
+    userData: IUserLogin;
+    isLoading: boolean
+  }
+  
+
+  const initialState = {
+    isLoggedIn: false,
+    userData: {},
     isLoading: false,
-    userData: {}
-}
+  };
+  
 
 const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || '';
 
-const signupUser = createAsyncThunk('auth/signup',async(data:IUserSignup)=>{
+export const signupUser = createAsyncThunk('auth/signup',async(data:IUserSignup)=>{
     try{
         const user = fetch(baseUrl, {
             method: 'POST',
             body: JSON.stringify(data)
         })
+        console.log(user)
         return user;
     
     }catch(err:any){
@@ -35,11 +46,14 @@ const authSlice = createSlice({
                 state.isLoading = true;
             })
             .addCase(signupUser.fulfilled, (state, action)=>{
-                state.userData = action?.payload?.data
-                state.isLoading = false  
+                state.userData = action?.payload?.data;
+                state.isLoading = false;
+                state.isLoggedIn = true ; 
             })
             .addCase(signupUser.rejected,(state)=>{
                 state.isLoading = false
             })
     }
 })
+
+export default authSlice.reducer

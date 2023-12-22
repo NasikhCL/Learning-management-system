@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from 'next/link'
 import { IUserSignup } from '@/types/auth'
+
  
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -19,6 +20,7 @@ export default function Signup({ className, ...props }: UserAuthFormProps) {
     password: ''
   }) 
 
+  const 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
     const {name, value} = e.target;
     setFormData((prev)=>  {
