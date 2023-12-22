@@ -1,11 +1,20 @@
+import CourseCard from '@/components/CourseCard'
+import Header from '@/components/Header'
 import { Button } from '@/components/ui/button'
-import { ModeToggle } from '@/components/ui/toggleModeButton'
-
 export default function Home() {
   return (
-  <div>
-    <h1>hello NAISKH</h1>
-    <ModeToggle />
-  </div>
+  <>
+    <Header/>
+    <section className='md:px-12 my-4'>
+      <h1>Courses</h1>
+      <div className='flex justify-center gap-4'>
+        <CourseCard />
+        <CourseCard />
+        <CourseCard />
+        <CourseCard />
+      </div>
+    </section>
+  
+  </>
   )
 }
