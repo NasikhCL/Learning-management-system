@@ -7,16 +7,30 @@ type Props = {}
 const courseDetails = (props: Props) => {
   return (
     <div>
-      <section className='md:w-[60%] bg-gray-600 h-[1000px]'>
-
+     <Card className='lg:hidden flex flex-col gap-2 py-4 px-4'>
+        <div className='md:w-[300px] h-[180px] bg-red-300'>
+        </div> 
+        <CardTitle>Full Stack Web development(MERN)</CardTitle>
+        <CardTitle className='flex items-center gap-4'><span>₹1500</span><span className='text-sm line-through'>₹7500/-</span></CardTitle>
+        <Button>Buy Now</Button>
+        <CardDescription className='px-4'>
+          <ul  className='list-disc'>
+            <li>10 hours on-demand Video content</li>
+            <li>source code file</li>
+            <li>certificate of completion</li>
+            <li>Life time access</li>
+          </ul>
+        </CardDescription>
+      </Card>
+      <section className='lg:w-[65%] bg-gray-600 h-[1000px]'>
       </section>
-      <Card className='fixed  top-20 right-10 px-4'>
-        <div className='md:w-[500px] h-[300px] bg-red-300'>
+      <Card className='hidden w-[30%] lg:flex flex-col gap-2 py-4 px-4 lg:fixed top-20 right-10'>
+        <div className='w-full h-[100px] lg:h-[200px] xl:h-[250px] 2xl:h-[350px] bg-red-300'>
         </div> 
         <CardTitle className='flex items-center gap-4'><span>₹1500</span><span className='text-sm line-through'>₹7500/-</span></CardTitle>
         <Button>Buy Now</Button>
-        <CardDescription className='list-disc'>
-          <ul >
+        <CardDescription className='px-4'>
+          <ul  className='list-disc'>
             <li>10 hours on-demand Video content</li>
             <li>source code file</li>
             <li>certificate of completion</li>
