@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-       <body className="px-4 md:px-8">
+       <body>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -24,7 +24,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Header />
-            {children}
+            <main  className="px-4 md:px-8">
+              {children}
+            </main>
           </ThemeProvider>
         </body>
     </html> 

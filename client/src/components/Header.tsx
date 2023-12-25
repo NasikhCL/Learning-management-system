@@ -7,7 +7,7 @@ type Props = {}
 const Header = (props: Props) => {
     
   return (
-    <div className=" h-16 w-full flex justify-between items-center border-b-2 sticky top-0">
+    <div className="h-16 w-full px-4 md:px-8 flex justify-between items-center border-b-2 sticky top-0 bg-transparent bg-opacity-80 backdrop-filter backdrop-blur-md">
         <h2 className="text-2xl font-bold">SeLearn.<span className="text-yellow-400">io</span></h2>
         <ul className="hidden md:flex items-center gap-12">
             <li>courses</li>
