@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
  
+
+::-webkit-scrollbar {
+  width: 0;  /* Remove horizontal scrollbar */
+  height: 0; /* Remove vertical scrollbar */
+}
 @layer base {
   :root {
     --background: 0 0% 100%;

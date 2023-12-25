@@ -27,12 +27,12 @@ const courseDetails = (props: Props) => {
           <span>Life time access</span>
         </CardDescription>
       </Card>
-      <section className='flex flex-col mt-5 lg:w-[65%] h-[1000px]'>
+      <section className='flex flex-col mt-5 lg:w-[65%] overflow-y-scroll'>
         <div className='hidden lg:block'>
           <h1 className='text-4xl font-bold'>Full Stack Web development(MERN)</h1>
         </div>
-        <div className='text-xl'>
-          <p className='leading-7 [&:not(:first-child)]:mt-6'>In this course you will be learing to build a full stack web application using MERN stack which will be production ready and highly scalable. this is a dummy text which is used to add some description to this card this may also include randum data</p>
+        <div className=''>
+          <p className='text-xl text-justify leading-7 [&:not(:first-child)]:mt-6'>In this course you will be learing to build a full stack web application using MERN stack which will be production ready and highly scalable. this is a dummy text which is used to add some description to this card this may also include randum data</p>
         </div>
         <div className='flex gap-4 items-center'>
           <div>
@@ -43,9 +43,9 @@ const courseDetails = (props: Props) => {
             <span>Language: </span><span>English</span>
           </div>
         </div>
-        <Card className='my-4 p-4'>
-          <CardTitle className='mb-2'>What you will learn?</CardTitle>
-          <div className='flex gap-12'>
+        <Card className='my-4 py-4'>
+          <CardTitle className='mb-2 ml-2'>What you will learn?</CardTitle>
+          <div className='flex gap-12 ml-4'>
             <CardDescription className='flex flex-col '>
               <span>HTML</span>
               <span>CSS</span>
