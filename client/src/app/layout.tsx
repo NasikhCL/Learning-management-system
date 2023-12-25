@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/components/theme-provider"
 import type { Metadata } from 'next'
 import './globals.css'
+import Header from "@/components/Header"
 
 
 export const metadata: Metadata = {
@@ -15,14 +16,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-       <body className="px-4 md:px-8">
+       <body>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <Header />
+            <main  className="px-4 md:px-8">
+              {children}
+            </main>
           </ThemeProvider>
         </body>
     </html> 

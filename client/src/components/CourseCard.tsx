@@ -25,7 +25,7 @@ const CourseCard = (props: Props) => {
                 height={100}
                 className='w-[300px] h-[180px] self-center'
                 />
-            <CardTitle className=''>MERN Stack developer</CardTitle>
+            <CardTitle className='my-2'>MERN Stack developer</CardTitle>
             <CardDescription className='self-start'>In this course you will be learing to build a full stack web application using MERN stack which will be production ready and highly scalable. this is a dummy text which is used to add some description to this card this may also include randum data</CardDescription>
             <div className='w-full mt-2 flex items-center justify-between'>
                 <div className='text-xl flex items-center gap-2'>
