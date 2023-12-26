@@ -14,13 +14,16 @@ const VerifyCode: React.FC = () => {
 
   const handleInputChange = (index: number, value: string) => {
     // Update the corresponding value in the state
-    const newOtpValues = [...otpValues];
-    newOtpValues[index] = value;
-    setOtpValues(newOtpValues);
-
-    // Move focus to the next input field if value is entered
-    if (value !== '' && index < inputRefs.length - 1) {
-      inputRefs[index + 1].current?.focus();
+    const filteredValue = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+    if(filteredValue){
+      const newOtpValues = [...otpValues];
+      newOtpValues[index] = filteredValue;
+      setOtpValues(newOtpValues);
+  
+      // Move focus to the next input field if value is entered
+      if (value !== '' && index < inputRefs.length - 1) {
+        inputRefs[index + 1].current?.focus();
+      }
     }
   };
   const handleSubmit =()=>{
@@ -37,13 +40,16 @@ const VerifyCode: React.FC = () => {
         setOtpValues(newOtpValues);
         inputRefs[index - 1].current?.focus();
       }
+      if(index === 0){
+        setOtpValues(['','','',''])
+      }
     
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-    <div className='flex gap-5'>
+    <div className='flex gap-5 mb-5'>
       {otpValues.map((value, index) => (
         <Input
           className='text-center text-2xl'
@@ -57,7 +63,7 @@ const VerifyCode: React.FC = () => {
         />
       ))}
     </div>
-    <Button disabled={isLoading}>
+    <Button className='w-full' disabled={isLoading}>
     {isLoading && (
       <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
     )}
@@ -67,4 +73,4 @@ const VerifyCode: React.FC = () => {
   );
 };
 
-export default verifyCode;
+export default VerifyCode;
