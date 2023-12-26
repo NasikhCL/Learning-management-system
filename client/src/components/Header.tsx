@@ -7,12 +7,12 @@ type Props = {}
 const Header = (props: Props) => {
     
   return (
-    <div className="h-16 w-full px-4 md:px-8 flex justify-between items-center border-b-2 sticky top-0 bg-transparent bg-opacity-80 backdrop-filter backdrop-blur-md">
-        <h2 className="text-2xl font-bold">SeLearn.<span className="text-yellow-400">io</span></h2>
+    <div className="h-16 w-full px-4 md:px-8 z-50 flex justify-between items-center border-b-2 sticky top-0 bg-transparent bg-opacity-80 backdrop-filter backdrop-blur-md">
+        <Link href='/' className="text-2xl font-bold">SeLearn.<span className="text-yellow-400">io</span></Link>
         <ul className="hidden md:flex items-center gap-12">
-            <li>courses</li>
-            <li>About</li>
-        </ul>
+            <li className="cursor-pointer">courses</li>
+            <li className="cursor-pointer">About</li>
+        </ul> 
         <div className="hidden md:flex gap-10">
         <Link href='/login' className="border px-3 py-1 rounded">
             Login/Signup
