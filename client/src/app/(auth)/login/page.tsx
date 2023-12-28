@@ -7,15 +7,25 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from 'next/link'
-import { IUserLogin } from '@/types/auth'
+import { ILoggedInUser, IUserLogin } from '@/types/auth'
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from '../../../../redux/slices/loginSlice'
+import { RootState } from '../../../../redux/store'
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+import { useRouter } from 'next/navigation'
 
-
+// Define the type for your dispatch function
+type AppDispatch = ThunkDispatch<RootState, void, AnyAction>;
 export default function Login() {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const router = useRouter();
   const [formData, setFormData] = useState<IUserLogin>({
     email: '',
     password: ''
   })
+  const dispatch: AppDispatch = useDispatch();
+  const isLoading  = useSelector((state:RootState) => state.loginUserData.isLoading);
+  
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
     const {name, value} = e.target;
@@ -24,13 +34,14 @@ export default function Login() {
     })
   }
   async function onSubmit(event: React.SyntheticEvent) {
-    // to: backend call and verify the credentials, then redirect
-    event.preventDefault()
-    setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    try{
+      // to: backend call and verify the credentials, then redirect
+      event.preventDefault();
+      dispatch(loginUser(formData));
+      router.push('/')
+    }catch(err:any){
+      console.log(err.message)
+    }
   }
 
   return (
