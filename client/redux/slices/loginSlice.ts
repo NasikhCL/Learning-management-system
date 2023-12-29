@@ -9,21 +9,21 @@ const initialState : ILoggedInUser = {
     email:'',
     PurchasedCourses: [],
     role: '',
-    token: ''
+    token: '',
+    id: ''
 }
 
-const baseUrl = process.env.BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || '';
 export const loginUser = createAsyncThunk('auth/login',async(data: IUserLogin)=>{
     try {
-        const url =  baseUrl + '/users/login'
+        const url =  baseUrl + 'users/login'
         const {email, password } = data;
-        const user = axios.post(url,{
+        const response = axios.post(url,{
             email,
             password
         });
-        if(user){
-            console.log(user, '//////something is this')
-            return user;
+        if(response){
+            return response;
         } 
     } catch (err: any) {
         return err.message;
@@ -40,14 +40,16 @@ const loginUserSlice =  createSlice({
             .addCase(loginUser.pending, (state)=>{
                 state.isLoading = true;
             })
-            .addCase(loginUser.fulfilled, (state)=>{
+            .addCase(loginUser.fulfilled, (state,action)=>{
+                const user = action.payload.data.user
+                
                 state.isLoading = false;
                 state.isLoggedIn= true;
-                state.name='Nasik';
-                state.email='';
-                state.PurchasedCourses= [];
-                state.role= '';
-                state.token='';
+                state.name=user.name;
+                state.email=user.email;
+                state.PurchasedCourses= user.courses;
+                state.role= user.role;
+                state.token=action.payload.data.accessToken;
             })
             .addCase(loginUser.rejected, (state)=>{
                 state.isLoading = false

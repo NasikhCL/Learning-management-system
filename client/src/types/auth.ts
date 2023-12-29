@@ -21,5 +21,6 @@ export interface ILoggedInUser{
     role: string;
     PurchasedCourses: string[];
     isLoading: boolean;
-    isLoggedIn: boolean
+    isLoggedIn: boolean;
+    id: string
 }

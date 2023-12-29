@@ -1,11 +1,11 @@
 import Carousel from '@/components/Carousel'
 import CourseCard from '@/components/CourseCard'
-import Header from '@/components/Header'
+import Header from '@/components/Header'    
 import Hero from '@/components/Hero'
 import { Button } from '@/components/ui/button'
 export default function Home() {
   return (
-  <>
+    <>
     {/* <Hero /> */}
     <Carousel />
     {/* <section className='md:px-12 my-4'>
@@ -18,6 +18,6 @@ export default function Home() {
       </div>
     </section> */}
   
-  </>
+    </>
   )
 }
