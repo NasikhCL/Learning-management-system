@@ -16,7 +16,7 @@ type Props = {}
 
 const CourseCard = (props: Props) => {
     return (
-    <Link href='https://www.google.com'>
+    <Link href='/course/123'>
         <Card className='flex flex-col items-center p-2'>
             <Image 
                 alt='course-thumbnail'

@@ -2,6 +2,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import type { Metadata } from 'next'
 import './globals.css'
 import Header from "@/components/Header"
+import { Providers } from "./Provider"
 
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
+    <Providers>
     <html lang="en">
        <body>
           <ThemeProvider
@@ -30,5 +32,6 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
     </html> 
+    </Providers>
   )
 }

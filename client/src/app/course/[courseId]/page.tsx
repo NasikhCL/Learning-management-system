@@ -8,6 +8,8 @@ import {
 
 import { Card, CardDescription, CardTitle } from '@/components/ui/card'
 import React, { FC } from 'react'
+import Image from 'next/image'
+import courseThumb from '../../../../public/courseThumb.jpg'
 
 type Props = {}
 
@@ -15,8 +17,13 @@ const courseDetails = (props: Props) => {
   return (
     <div>
       <Card className='lg:hidden flex flex-col gap-2 my-2 py-4 px-4'>
-        <div className='md:w-full h-[180px] bg-red-300'>
-        </div>
+      <Image 
+                alt='course-thumbnail'
+                src={courseThumb}
+                width={250}
+                height={100}
+                className='w-full items-center h-[180px] md:h-[300px]'
+                />
         <CardTitle>Full Stack Web development(MERN)</CardTitle>
         <CardTitle className='flex items-center gap-4'><span>₹1500</span><span className='text-sm line-through'>₹7500/-</span></CardTitle>
         <Button>Buy Now</Button>
@@ -108,8 +115,13 @@ const courseDetails = (props: Props) => {
         </div>
       </section>
       <Card className='hidden w-[30%] lg:flex flex-col gap-2 py-4 px-4 lg:fixed top-20 right-10'>
-        <div className='w-full h-[100px] lg:h-[200px] xl:h-[250px] 2xl:h-[350px] bg-red-300'>
-        </div>
+        <Image 
+                alt='course-thumbnail'
+                src={courseThumb}
+                width={170}
+                height={100}
+                className='w-full h-[100px] lg:h-[200px] xl:h-[250px] 2xl:h-[350p]'
+                />
         <CardTitle className='flex items-center gap-4'><span>₹1500</span><span className='text-sm line-through'>₹7500/-</span></CardTitle>
         <Button>Buy Now</Button>
         <CardDescription className='px-4 flex flex-col'>
