@@ -13,12 +13,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Icons } from './icons'
 
 
 type Props = {}
 
 const Header = (props: Props) => {
   const isLoggedIn = useSelector((state: any) => state.loginUserData.isLoggedIn)
+  const isLoading = useSelector((state: any) => state.loginUserData.isLoading)
   const user = useSelector((state: any) => state.loginUserData)
 
   return (
@@ -29,7 +31,9 @@ const Header = (props: Props) => {
         <li className="cursor-pointer">About</li>
       </ul>
       <div className="hidden md:flex items-center gap-10">
-        {
+        { isLoading ? 
+        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        :(
           isLoggedIn ?
             <DropdownMenu>
               <DropdownMenuTrigger>
@@ -54,6 +58,7 @@ const Header = (props: Props) => {
             <Link href='/login' className="border px-3 py-1 rounded">
               Login/Signup
             </Link>
+            )
         }
         <ModeToggle />
       </div>
