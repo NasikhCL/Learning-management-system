@@ -8,11 +8,21 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from 'next/link'
 import { IUserSignup } from '@/types/auth'
+import { useDispatch } from 'react-redux'
+import { registerUser } from '../../../../redux/slices/authSlice'
+import { AnyAction } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { useRouter } from 'next/navigation'
+import { RootState } from '../../../../redux/store'
 
+// Define the type for your dispatch function
+type AppDispatch = ThunkDispatch<RootState, void, AnyAction>;
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export default function Signup({ className, ...props }: UserAuthFormProps) {
+  const dispatch:AppDispatch = useDispatch();
+  const router = useRouter();
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [formData, setFormData] = React.useState<IUserSignup>({
     name: '',
@@ -29,11 +39,8 @@ export default function Signup({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(event: React.SyntheticEvent) {
     //handle submit login / backend calls
     event.preventDefault()
-    setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+    dispatch(registerUser(formData));
+    // router.push('/verifcation-code')
   }
 
   return (
