@@ -7,7 +7,11 @@ export const store = configureStore({
     reducer: {
         registerUser: authSlice,
         loginUserData:loginUserSlice
-    } 
+    },
+    middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }) 
 }) 
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
