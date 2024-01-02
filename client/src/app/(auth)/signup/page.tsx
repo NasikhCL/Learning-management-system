@@ -40,7 +40,7 @@ export default function Signup({ className, ...props }: UserAuthFormProps) {
     //handle submit login / backend calls
     event.preventDefault()
     dispatch(registerUser(formData));
-    // router.push('/verifcation-code')
+    router.push('/verifcation-code')
   }
 
   return (
