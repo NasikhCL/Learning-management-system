@@ -1,38 +1,51 @@
 import { IUserLogin, IUserSignup } from "@/types/auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 
 
 
 interface UsersState {
-    isLoggedIn: boolean;
-    userData: IUserLogin;
+    activationCode: string;
+    activationToken: string;
     isLoading: boolean
+    userData: IUserSignup
   }
   
 
-  const initialState = {
-    isLoggedIn: false,
-    userData: {},
+  const initialState:UsersState = {
     isLoading: false,
+    activationCode: "",
+    activationToken: "",
+    userData:{
+        name: '',
+        email: '',
+        password:''
+    }
+    
   };
   
 
 const baseUrl = process.env.NEXT_PUBLIC_SERVER_URL || '';
-
-export const signupUser = createAsyncThunk('auth/signup',async(data:IUserSignup)=>{
-    try{
-        const user = fetch(baseUrl, {
-            method: 'POST',
-            body: JSON.stringify(data)
-        })
-        console.log(user)
-        return user;
-    
-    }catch(err:any){
-        return err
+export const registerUser = createAsyncThunk('auth/register',async(data: IUserSignup)=>{
+    try {
+        const url =  baseUrl + 'users/registration'
+        const {name, email, password } = data;
+        const response =  await axios.post(url,{
+            name,
+            email,
+            password
+        });
+        if(response){
+            console.log(response,'this is response')
+            return response;
+        } 
+    } catch (err: any) {
+        return err.message;
+        
     }
 })
+
 
 const authSlice = createSlice({
     name: 'auth',
@@ -42,15 +55,14 @@ const authSlice = createSlice({
     },
     extraReducers: (builder)=>{
         builder
-            .addCase(signupUser.pending,(state)=>{
+            .addCase(registerUser.pending,(state)=>{
                 state.isLoading = true;
             })
-            .addCase(signupUser.fulfilled, (state, action)=>{
-                state.userData = action?.payload?.data;
-                state.isLoading = false;
-                state.isLoggedIn = true ; 
+            .addCase(registerUser.fulfilled, (state, action)=>{
+                state.isLoading= false;
+                state.activationToken = action.payload.data.activationToken
             })
-            .addCase(signupUser.rejected,(state)=>{
+            .addCase(registerUser.rejected,(state)=>{
                 state.isLoading = false
             })
     }

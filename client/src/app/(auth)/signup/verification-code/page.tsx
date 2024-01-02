@@ -9,18 +9,29 @@ import { Label } from "@/components/ui/label"
 import Link from 'next/link'
 import { IUserLogin } from '@/types/auth'
 import VerifyCode from '@/components/VerifyCode'
+import { registerUser } from '../../../../../redux/slices/authSlice'
+import { AnyAction } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { useRouter } from 'next/navigation'
+import { RootState } from '../../../../../redux/store'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
+// Define the type for your dispatch function
+type AppDispatch = ThunkDispatch<RootState, void, AnyAction>;
 
 export default function Login() {
+
+  const dispath: AppDispatch = useDispatch();
+
+  const activationToken = useSelector((state:any)=> state.registerUser.activationToken);
+
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [formData, setFormData] = useState<IUserLogin>({
-    email: '',
-    password: ''
-  })
+  const [activationCode, setActivationCode] = useState<object>({})
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => {
+    setActivationCode((prev) => {
       return { ...prev, [name]: value }
     })
   }
