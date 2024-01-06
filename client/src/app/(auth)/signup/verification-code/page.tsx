@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { cn } from "@/lib/utils"
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
@@ -14,8 +14,8 @@ import { AnyAction } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
 import { useRouter } from 'next/navigation'
 import { RootState } from '../../../../../redux/store'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+ 
 
 // Define the type for your dispatch function
 type AppDispatch = ThunkDispatch<RootState, void, AnyAction>;
@@ -25,10 +25,15 @@ export default function Login() {
   const dispath: AppDispatch = useDispatch();
 
   const activationToken = useSelector((state:any)=> state.registerUser.activationToken);
-
+  
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [activationCode, setActivationCode] = useState<object>({})
 
+  // useEffect(()=>{
+  //   if(activationToken){
+  //     console.log(activationToken,'this is the token')
+  //   }
+  // },[activationToken])
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setActivationCode((prev) => {
