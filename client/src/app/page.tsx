@@ -7,16 +7,15 @@ export default function Home() {
   return (
     <>
     <Hero />
-    {/* <Carousel /> */}
-    {/* <section className='md:px-12 my-4'>
-      <h1>Courses</h1>
-      <div className='w-screen flex justify-center gap-4'>
+    <section className='md:px-12 my-4'>
+      <h1 className='text-2xl font-bold my-2'>Courses</h1>
+      <div className='w-full flex flex-wrap justify-center gap-4'>
         <CourseCard />
         <CourseCard />
         <CourseCard />
         <CourseCard />
       </div>
-    </section> */}
+    </section>
   
     </>
   )
