@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 export default function Home() {
   return (
     <>
-    {/* <Hero /> */}
-    <Carousel />
+    <Hero />
+    {/* <Carousel /> */}
     {/* <section className='md:px-12 my-4'>
       <h1>Courses</h1>
       <div className='w-screen flex justify-center gap-4'>
