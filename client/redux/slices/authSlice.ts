@@ -1,4 +1,4 @@
-import { IUserLogin, IUserSignup } from "@/types/auth";
+import { IUserLogin, IUserSignup, IVerificationCode } from "@/types/auth";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -6,8 +6,8 @@ import axios from "axios";
 
 
 interface UsersState {
-    activationCode: string;
     activationToken: string;
+    sucess
     isLoading: boolean
     userData: IUserSignup
   }
@@ -15,7 +15,6 @@ interface UsersState {
 
   const initialState:UsersState = {
     isLoading: false,
-    activationCode: "",
     activationToken: "",
     userData:{
         name: '',
@@ -46,6 +45,24 @@ export const registerUser = createAsyncThunk('auth/register',async(data: IUserSi
     }
 })
 
+export const activateUser = createAsyncThunk('auth/users/activate-user',async(data: IVerificationCode)=>{
+    try {
+        const url =  baseUrl + 'users/activate-user'
+        const {code, token } = data;
+        const response =  await axios.post(url,{
+            activation_token: token,
+            activation_code: code
+        });
+        if(response){
+            console.log(response,'this is response fdsafadsf')
+            return response;
+        } 
+    } catch (err: any) {
+        return err.message;
+        
+    }
+})
+
 
 const authSlice = createSlice({
     name: 'auth',
@@ -63,6 +80,16 @@ const authSlice = createSlice({
                 state.activationToken = action.payload.data.activationToken
             })
             .addCase(registerUser.rejected,(state)=>{
+                state.isLoading = false
+            })
+            .addCase(activateUser.pending,(state)=>{
+                state.isLoading = true;
+            })
+            .addCase(activateUser.fulfilled, (state)=>{
+                state.isLoading= false;
+                state.activationToken = ''
+            })
+            .addCase(activateUser.rejected,(state)=>{
                 state.isLoading = false
             })
     }

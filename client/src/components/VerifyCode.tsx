@@ -3,16 +3,40 @@
 import { Icons } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
-import React, { useState, useRef, ChangeEvent, KeyboardEvent } from 'react';
+import React, { useState, useEffect, useRef, ChangeEvent, KeyboardEvent } from 'react';
+import { activateUser } from '../../redux/slices/authSlice';
+import { AnyAction } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { useRouter } from 'next/navigation'
+import { RootState } from '../../redux/store';
+import { useDispatch, useSelector} from 'react-redux'
+ 
 
+// Define the type for your dispatch function
+type AppDispatch = ThunkDispatch<RootState, void, AnyAction>;
 
 const VerifyCode: React.FC = () => {
   const [otpValues, setOtpValues] = useState<string[]>(['', '', '', '']);
   const inputRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
+    const dispatch: AppDispatch = useDispatch();
+    const router = useRouter();
+
+    const activationToken = useSelector((state:any)=> state.registerUser.activationToken);
+  
+    const [activationCode, setActivationCode] = useState<string>("")
+  
+    useEffect(()=>{
+      if(activationToken){
+        console.log(activationToken,'this is the token')
+      }
+
+    },[activationToken, ])
 
   const handleInputChange = (index: number, value: string) => {
+
+  
     // Update the corresponding value in the state
     const filteredValue = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
     if(filteredValue){
@@ -26,7 +50,18 @@ const VerifyCode: React.FC = () => {
       }
     }
   };
-  const handleSubmit =()=>{
+  const handleSubmit = (e: React.SyntheticEvent)=>{
+
+    e.preventDefault();
+    if(otpValues.includes("")){
+      console.log('please enter the complete code')
+      return;
+    }
+    const activationCode = otpValues.join("")
+    dispatch(activateUser({code:activationCode, token:activationToken}))
+    router.push('/login');
+    // console.log(otpValues.join(""), 'this is token')
+    // console.log(otpValues, 'this is token')
     // api call and re routing
   }
 
