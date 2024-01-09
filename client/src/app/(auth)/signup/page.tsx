@@ -32,6 +32,7 @@ export default function Signup({ className, ...props }: UserAuthFormProps) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log(router,'path')
     setFormData((prev) => {
       return { ...prev, [name]: value }
     })
@@ -40,9 +41,8 @@ export default function Signup({ className, ...props }: UserAuthFormProps) {
     //handle submit login / backend calls
     event.preventDefault()
     dispatch(registerUser(formData));
-    router.push('/verifcation-code')
+    router.push('/signup/verification-code')
   }
-
   return (
     <>
       <p className="text-sm mx-auto text-muted-foreground">

@@ -17,23 +17,23 @@ type Props = {}
 const CourseCard = (props: Props) => {
     return (
     <Link href='/course/123'>
-        <Card className='flex flex-col items-center p-2'>
+        <Card className='w-[290px] md:w-[320px] flex flex-col items-center p-2'>
             <Image 
                 alt='course-thumbnail'
                 src={courseThumb}
                 width={170}
                 height={100}
-                className='w-[300px] h-[180px] self-center'
+                className='w-full h-[180px] self-center'
                 />
             <CardTitle className='my-2'>MERN Stack developer</CardTitle>
             <CardDescription className='self-start'>In this course you will be learing to build a full stack web application using MERN stack which will be production ready and highly scalable. this is a dummy text which is used to add some description to this card this may also include randum data</CardDescription>
             <div className='w-full mt-2 flex items-center justify-between'>
-                <div className='text-xl flex items-center gap-2'>
+                <div className='md:text-xl flex items-center gap-2'>
                     <span className='opacity-70'>Price:</span>
                     <span>₹1500/-</span>
-                    <span className=' text-sm line-through'>₹7500/-</span>
+                    <span className='text-xs line-through'>₹7500/-</span>
                 </div>
-                <Button>View Course</Button>
+                <Button className="px-2 text-sm lg:text-md">View Course</Button>
             </div>
 
                

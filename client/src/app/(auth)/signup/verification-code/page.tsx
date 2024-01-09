@@ -1,49 +1,13 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import Link from 'next/link'
-import { IUserLogin } from '@/types/auth'
+
 import VerifyCode from '@/components/VerifyCode'
-import { registerUser } from '../../../../../redux/slices/authSlice'
-import { AnyAction } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
-import { useRouter } from 'next/navigation'
-import { RootState } from '../../../../../redux/store'
-import { useDispatch } from 'react-redux'
-import { useSelector } from 'react-redux'
 
-// Define the type for your dispatch function
-type AppDispatch = ThunkDispatch<RootState, void, AnyAction>;
-
-export default function Login() {
-
-  const dispath: AppDispatch = useDispatch();
-
-  const activationToken = useSelector((state:any)=> state.registerUser.activationToken);
-
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const [activationCode, setActivationCode] = useState<object>({})
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setActivationCode((prev) => {
-      return { ...prev, [name]: value }
-    })
-  }
-  async function onSubmit(event: React.SyntheticEvent) {
-    // to: backend call and verify the credentials, then redirect
-    event.preventDefault()
-    setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
-  }
+ 
+export default function verification() {
 
   return (
     <>
