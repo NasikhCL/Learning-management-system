@@ -26,14 +26,14 @@ export function MainNav() {
           className={cn(
             "transition-colors hover:text-foreground/80",
             pathname?.startsWith("/")
-              ? "text-foreground"
+              ? "text-foreground underline"
               : "text-foreground/60"
           )}
         >
           Dashboard
         </Link>
         <Link
-          href="/add-new-course"
+          href="/admin/add-new-course"
           className={cn(
             "transition-colors hover:text-foreground/80",
             pathname === "/add-new-course" ? "text-foreground underline" : "text-foreground/60"
@@ -42,11 +42,11 @@ export function MainNav() {
           Add New Course
         </Link>
         <Link
-          href="/view-all-course"
+          href="/admin/view-all-course"
           className={cn(
             "transition-colors hover:text-foreground/80",
             pathname?.startsWith("/view-all-course")
-              ? "text-foreground"
+              ? "text-foreground underline"
               : "text-foreground/60"
           )}
         >
