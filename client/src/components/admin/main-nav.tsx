@@ -22,10 +22,10 @@ export function MainNav() {
       </Link>
       <nav className="flex items-center gap-6 text-sm">
       <Link
-          href="/"
+          href="/admin"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname?.startsWith("/")
+            pathname === ("/admin")
               ? "text-foreground underline"
               : "text-foreground/60"
           )}
@@ -36,7 +36,7 @@ export function MainNav() {
           href="/admin/add-new-course"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname === "/add-new-course" ? "text-foreground underline" : "text-foreground/60"
+            pathname === "/admin/add-new-course" ? "text-foreground underline" : "text-foreground/60"
           )}
         >
           Add New Course
@@ -45,7 +45,7 @@ export function MainNav() {
           href="/admin/view-all-course"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname?.startsWith("/view-all-course")
+            (pathname ==="/admin/view-all-course")
               ? "text-foreground underline"
               : "text-foreground/60"
           )}

@@ -27,7 +27,7 @@ const Header = (props: Props) => {
   const currentPath = usePathname()
   
   
-  if(currentPath === '/admin'){
+  if(currentPath.includes('/admin')){
     return null
   }else{
     return (
