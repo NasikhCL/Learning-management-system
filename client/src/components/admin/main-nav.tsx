@@ -21,47 +21,36 @@ export function MainNav() {
         </span>
       </Link>
       <nav className="flex items-center gap-6 text-sm">
-        <Link
-          href="/docs"
+      <Link
+          href="/"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname === "/docs" ? "text-foreground" : "text-foreground/60"
-          )}
-        >
-          Docs
-        </Link>
-        <Link
-          href="/docs/components"
-          className={cn(
-            "transition-colors hover:text-foreground/80",
-            pathname?.startsWith("/docs/components")
+            pathname?.startsWith("/")
               ? "text-foreground"
               : "text-foreground/60"
           )}
         >
-          Components
+          Dashboard
         </Link>
         <Link
-          href="/themes"
+          href="/add-new-course"
           className={cn(
             "transition-colors hover:text-foreground/80",
-            pathname?.startsWith("/themes")
+            pathname === "/add-new-course" ? "text-foreground underline" : "text-foreground/60"
+          )}
+        >
+          Add New Course
+        </Link>
+        <Link
+          href="/view-all-course"
+          className={cn(
+            "transition-colors hover:text-foreground/80",
+            pathname?.startsWith("/view-all-course")
               ? "text-foreground"
               : "text-foreground/60"
           )}
         >
-          Themes
-        </Link>
-        <Link
-          href="/examples"
-          className={cn(
-            "transition-colors hover:text-foreground/80",
-            pathname?.startsWith("/examples")
-              ? "text-foreground"
-              : "text-foreground/60"
-          )}
-        >
-          Examples
+          View All Courses
         </Link>
         <Link
           href={`www.google.com`}
@@ -69,7 +58,7 @@ export function MainNav() {
             "hidden text-foreground/60 transition-colors hover:text-foreground/80 lg:block"
           )}
         >
-          GitHub
+          Dashboard
         </Link>
       </nav>
     </div>
