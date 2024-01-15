@@ -4,6 +4,7 @@ import React from 'react'
 import { ModeToggle } from './ui/toggleModeButton'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
+import { usePathname } from 'next/navigation'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -18,13 +19,20 @@ import { Icons } from './icons'
 
 type Props = {}
 
+
 const Header = (props: Props) => {
   const isLoggedIn = useSelector((state: any) => state.loginUserData.isLoggedIn)
   const isLoading = useSelector((state: any) => state.loginUserData.isLoading)
   const user = useSelector((state: any) => state.loginUserData)
-
-  return (
-    <div className="h-16 w-full px-4 md:px-8 z-50 flex justify-between items-center border-b-2 sticky top-0 bg-transparent bg-opacity-80 backdrop-filter backdrop-blur-md">
+  const currentPath = usePathname()
+  
+  
+  if(currentPath.includes('/admin')){
+    return null
+  }else{
+    return (
+   
+    <div className="h-16 w-full px-4 md:px-8 z-50 flex justify-between items-center border-b-2 sticky top-0 bg-transparent bg-opacity-80 backdrop-filter backdrop-blur-md ">
       <Link href='/' className="text-2xl font-bold">SeLearn.<span className="text-yellow-400">io</span></Link>
       <ul className="hidden md:flex items-center gap-12">
         <li className="cursor-pointer">courses</li>
@@ -64,7 +72,9 @@ const Header = (props: Props) => {
       </div>
       <svg className="w-5 h-5 md:hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14"><path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 1h15M1 7h15M1 13h15"></path></svg>
     </div>
+  
   )
+  }
 }
 
 export default Header
